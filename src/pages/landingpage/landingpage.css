@@ -1,0 +1,9 @@
+.mainContainer{
+    min-height:100vh;
+  }
+  .sidebar{
+    background-color: white;
+  }
+  .navbar{
+    background-color:white;
+  }
