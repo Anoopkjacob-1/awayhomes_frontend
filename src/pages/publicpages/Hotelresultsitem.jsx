@@ -1,17 +1,28 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+
 import {Link} from 'react-router-dom';
 import { Card, } from 'antd';
+import axios from "axios";
 
-const Hotelresultsitem=()=> {
+const Hotelresultsitem=({id})=> {
+    const [state1, setstate] = useState(null)
+    useEffect(() => {
+
+        axios
+              .post("http://localhost:5000/app/singlerooms",id)
+              .then(resp=>{
+                setstate(resp.data)
+                });
+      }, [id])
     return (
       
-   <Card title="Card title" bordered={false} style={{ width:"100%" }} extra={<Link to="/home/Booking">Book</Link>}>
+   <Card title="Card title" bordered={false} style={{ width:"100%" }} extra={<Link to={{pathname:"/home/Booking",id:state1._id}}>Book</Link>}>
    <div style={{display:"flex",alignItems:"center"}}>
       <div>
-            <p>
-            place: "place" <br/>
-            address:"address"
-            </p>
+      <p>
+             place: {state1.place} <br/>
+             address:{state1.address}
+              </p>
             </div>
        <div>
         <img src="#" alt="hotel_images" width="10vh" height="10vh"/>
@@ -22,5 +33,4 @@ const Hotelresultsitem=()=> {
 }
 
 export default Hotelresultsitem
-
 

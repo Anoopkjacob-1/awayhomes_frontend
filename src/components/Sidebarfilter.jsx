@@ -1,10 +1,8 @@
-import { Button, Form, Input, Select, DatePicker,Menu } from "antd";
+import { Button, Form, Input, Select,Menu,Alert } from "antd";
 import { FilterOutlined } from '@ant-design/icons';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
-// import intervalToDuration from 'date-fns/intervalToDuration';
-import differenceInDays from "date-fns/differenceInDays";
-
-const { RangePicker } = DatePicker;
 const { SubMenu } = Menu;
 
 const formItemLayout = {
@@ -26,24 +24,23 @@ const formItemLayout = {
   },
 };
 
-const dateFormat = "YYYY/MM/DD";
+
 
 const Sidebarfilter = () => {
+  const history = useHistory();
   const { Option } = Select;
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    //   console.log(values)
-    //  console.log( intervalToDuration({
-    //     start: new Date(Date.now()),
-    //     end: new Date(2022, 9, 7, 14, 0)
-    //   })
-    //  )
-    console.log(
-      differenceInDays(
-        new Date(2012, 7, 16, 0, 0),
-        new Date(2012, 6, 13, 23, 0)
-      )
-    );
+    axios
+    .post("http://localhost:5000/app/filter",values)
+    .then(resp=>{
+      if(resp.status===200){
+        history.push("/")
+      }else{
+        <Alert message="no results" type="warning" />
+      }
+    });
+
   };
   return (
     <Menu
@@ -55,16 +52,7 @@ const Sidebarfilter = () => {
       <SubMenu key="sub1" icon={<FilterOutlined />} title="Filter">
         <Form form={form} {...formItemLayout} onFinish={onFinish} width="100%"   >
          
-            <Form.Item
-              name="date"
-              hasFeedback
-              style={{ width: "400px",padding:".3rem" }}
-              rules={[{ required: true, message: "Please input date!" }]}
-            >
-              <RangePicker format={dateFormat}    />
-            </Form.Item>
-  
-
+        
          
             <Form.Item
               name="place"

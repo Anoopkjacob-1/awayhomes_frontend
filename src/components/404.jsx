@@ -10,7 +10,7 @@ export default function Notfound() {
     const [isModalVisible, setIsModalVisible] = useState(true);
     const handleOk = () => {
         setIsModalVisible(false);
-          history.push({pathname:"/home"});
+          history.push({pathname:"/"});
       };
       
     return (

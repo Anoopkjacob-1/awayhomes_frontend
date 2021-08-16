@@ -16,7 +16,7 @@ function App() {
     <Router>
     <Switch>
        <AdminRoute   path="/Admindashboard"  component={AdminDashboard}/>
-       <PublicRoute  path="/home"  component={Landingpage}/>
+       <PublicRoute  path="/"  component={Landingpage}/>
        <Route path="*" component={Notfound} />
     </Switch>
     </Router>

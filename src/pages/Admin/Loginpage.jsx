@@ -1,5 +1,7 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button,Alert } from 'antd';
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 
 const formItemLayout = {
@@ -22,10 +24,21 @@ const formItemLayout = {
   };
   
 const Loginpage=()=> {
+  const history = useHistory(); 
 
     const [form]=Form.useForm();
     const onFinish=(values)=>{
-        console.log(values)
+     
+         axios
+                .post("http://localhost:5000/app/hotelCreate", values)
+                .then(resp=>{
+                  if(resp.status===200){
+                    localStorage.setItem("Admin")
+                    history.push("/Admindashboard")
+                  }else{
+                    <Alert message="invalid password or username" type="warning" />
+                  }
+                });
     }  
 
     return (

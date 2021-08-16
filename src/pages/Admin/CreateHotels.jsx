@@ -1,5 +1,7 @@
 import React from 'react'
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input,Alert  } from 'antd';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const formItemLayout = {
     labelCol: {
@@ -21,10 +23,19 @@ const formItemLayout = {
   };
   
   const CreateHotel=()=> {
-
+    const history = useHistory(); 
       const [form]=Form.useForm();
       const onFinish=(values)=>{
-          console.log(values)
+        
+        axios
+          .post("http://localhost:5000/app/hotelCreate", values)
+          .then(resp=>{
+            if(resp.status===200){
+              history.push("/Admindashboard")
+            }else{
+              <Alert message="Hotel not created" type="warning" />
+            }
+          });
       }  
       
       return (

@@ -1,7 +1,9 @@
 import React from 'react'
-import { Button, Form,InputNumber ,Select  } from 'antd';
-// import intervalToDuration from 'date-fns/intervalToDuration';
-import differenceInDays from 'date-fns/differenceInDays'
+import { Button, Form,InputNumber ,Select,Alert  } from 'antd';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+
 
 const formItemLayout = {
     labelCol: {
@@ -22,22 +24,21 @@ const formItemLayout = {
     },
   };
   
-  const CreateRoom=()=> {
+  const CreateRoom=(props)=> {
+    const id =props.location.state.id
+    const history = useHistory(); 
     const { Option } = Select;
       const [form]=Form.useForm();
       const onFinish=(values)=>{
-        //   console.log(values)
-        //  console.log( intervalToDuration({
-        //     start: new Date(Date.now()),
-        //     end: new Date(2022, 9, 7, 14, 0)
-        //   })
-        //  )
-        console.log(
-          differenceInDays(
-            new Date(2012, 7, 16, 0, 0),
-            new Date(2012, 6, 13, 23, 0)
-          )
-        ) 
+        axios
+        .post("http://localhost:5000/app/roomCreate", ...values,id)
+        .then(resp=>{
+          if(resp.status===200){
+            history.push("/Admindashboard")
+          }else{
+            <Alert message="room not created" type="warning" />
+          }
+        });
       }  
       return (
           <Form  form={form}{...formItemLayout} onFinish={onFinish}>

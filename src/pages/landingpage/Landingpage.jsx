@@ -1,8 +1,9 @@
 import React,{useState} from 'react'
 import './landingpage.css';
-import { Layout, Menu, Form, Input  } from 'antd';
+import { Layout, Menu, Form, Input,Alert  } from 'antd';
 import { AlignLeftOutlined,SearchOutlined  } from '@ant-design/icons';
 import { Switch,Link} from 'react-router-dom';
+
 
 import {PublicRoute} from '../../layouts/publiclayout'
 
@@ -10,6 +11,10 @@ import Loginpage from '../Admin/Loginpage';
 import Booking from '../publicpages/Booking';
 import Subcontainer from '../publicpages/Subcontainer';
 import Sidebarfilter from '../../components/Sidebarfilter';
+
+
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const formItemLayout = {
@@ -33,13 +38,27 @@ const formItemLayout = {
 
 
 const Landingpage=()=>{
-    
+  
+
 const [sidebar, setsidebar] = useState(false)  
 const [search, setsearch] = useState("anoop")  
 
+const history = useHistory(); 
+
 const [form] = Form.useForm();
 const onFinish = (values) => {
-  console.log(values)
+
+
+   axios
+          .post("http://localhost:5000/app/search", values)
+          .then(resp=>{
+            if(resp.status===200){
+              history.push("/home")
+            }else{
+              <Alert message="no result" type="warning" />
+            }
+          });
+
 };
 
     return (
@@ -61,7 +80,7 @@ const onFinish = (values) => {
              </Link>
               </Menu.Item>
               <Menu.Item key="3">
-              <Link to="/home">
+              <Link to="/">
                Home
              </Link>
             </Menu.Item>
@@ -87,7 +106,7 @@ const onFinish = (values) => {
             </Header>
             <Content className="contentContainer" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
             <Switch>
-              <PublicRoute exact path="/home"  component={Subcontainer}/>
+              <PublicRoute exact path="/"  component={Subcontainer}/>
               <PublicRoute exact path="/home/login"  component={Loginpage}/>
               <PublicRoute exact path="/home/Booking"  component={Booking}/>
             </Switch>
